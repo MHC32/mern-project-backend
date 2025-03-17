@@ -40,3 +40,8 @@ module.exports.signUpErrors = (err) => {
 
     return errors
   }
+
+
+  module.exports.uploadErrors = (err) => {
+    let errors = {format: '',  maxSize: ''}
+  }
