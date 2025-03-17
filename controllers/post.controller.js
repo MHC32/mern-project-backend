@@ -136,5 +136,53 @@ module.exports.updatePost = async (req, res) => {
 
 
   module.exports.unlikePost = async(req, res) => {
-    
+    // Valider l'ID du post
+    if (!objectID.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid post ID: ' + req.params.id });
+    }
+
+    // Valider l'ID de l'utilisateur
+    if (!objectID.isValid(req.body.id)) {
+        return res.status(400).json({ message: 'Invalid user ID: ' + req.body.id });
+    }
+
+    try {
+        // 1. Ajouter l'utilisateur aux likers du post
+        const updatedPost = await postModel.findByIdAndUpdate(
+            req.params.id,
+            { 
+                $pull : { likers: req.body.id } // Ajoute l'ID de l'utilisateur aux likers
+            },
+            { new: true, upsert: true, setDefaultsOnInsert: true }
+        );
+
+        // Si le post n'est pas trouvé
+        if (!updatedPost) {
+            return res.status(404).json({ message: 'Post not found: ' + req.params.id });
+        }
+
+        // 2. Ajouter le post aux likes de l'utilisateur
+        const updatedUser = await userModel.findByIdAndUpdate(
+            req.body.id,
+            {
+                $pull: { likes: req.params.id } // Ajoute l'ID du post aux likes de l'utilisateur
+            },
+            { new: true, upsert: true, setDefaultsOnInsert: true }
+        );
+
+        // Si l'utilisateur n'est pas trouvé
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found: ' + req.body.id });
+        }
+
+        // Réponse de succès
+        res.status(200).json({
+            message: 'Post uniked successfully!',
+            post: updatedPost,
+            user: updatedUser,
+        });
+    } catch (error) {
+        // Gestion des erreurs
+        res.status(500).json({ message: 'Internal server error: ' + error.message });
+    }  
   }
