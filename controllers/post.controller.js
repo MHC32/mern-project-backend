@@ -186,3 +186,58 @@ module.exports.updatePost = async (req, res) => {
         res.status(500).json({ message: 'Internal server error: ' + error.message });
     }  
   }
+
+
+
+  module.exports.commentPost = async (req, res) => {
+    // Valider l'ID du post
+    if (!objectID.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid post ID: ' + req.params.id });
+    }
+
+    // Valider les champs obligatoires
+    if (!req.body.commenterId || !req.body.commenterPseudo || !req.body.text) {
+        return res.status(400).json({ message: 'Missing required fields: commenterId, commenterPseudo, or text' });
+    }
+
+    try {
+        // Ajouter le commentaire au post
+        const updatedPost = await postModel.findByIdAndUpdate(
+            req.params.id,
+            {
+                $push: {
+                    comments: {
+                        commenterId: req.body.commenterId,
+                        commenterPseudo: req.body.commenterPseudo,
+                        text: req.body.text,
+                        timestamp: new Date().getTime(),
+                    }
+                }
+            },
+            { new: true } // Renvoie le document mis à jour
+        );
+
+        // Si le post n'est pas trouvé
+        if (!updatedPost) {
+            return res.status(404).json({ message: 'Post not found: ' + req.params.id });
+        }
+
+        // Réponse de succès
+        res.status(200).json({
+            message: 'Comment added successfully!',
+            post: updatedPost,
+        });
+    } catch (error) {
+        // Gestion des erreurs
+        res.status(500).json({ message: 'Internal server error: ' + error.message });
+    }
+};
+
+
+  module.exports.editCommentPost = async(req, res) => {
+
+  }
+
+  module.exports.deleteCommentPost = async(req, res) => {
+    
+  }
