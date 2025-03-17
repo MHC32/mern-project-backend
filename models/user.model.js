@@ -17,13 +17,14 @@ const userSchema = new mongoose.Schema(
       required: true,
       validate: [isEmail],
       lowercase: true,
+      unique: true,
       trim: true,
     },
     password: {
       type: String,
       required: true,
       max: 1024,
-      minLength: 6,
+      minlength: 6,
     },
 
     picture:{
