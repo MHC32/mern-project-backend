@@ -274,8 +274,43 @@ module.exports.editCommentPost = async (req, res) => {
     }
 };
 
-  module.exports.deleteCommentPost = async(req, res) => {
-     if (!objectID.isValid(req.params.id)) {
+module.exports.deleteCommentPost = async (req, res) => {
+    // Valider l'ID du post
+    if (!objectID.isValid(req.params.id)) {
         return res.status(400).json({ message: 'Invalid post ID: ' + req.params.id });
     }
-  }
+
+    // Valider l'ID du commentaire
+    if (!req.body.commentId) {
+        return res.status(400).json({ message: 'Missing required field: commentId' });
+    }
+
+    try {
+        // Trouver le post
+        const post = await postModel.findById(req.params.id);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found: ' + req.params.id });
+        }
+
+        // Trouver le commentaire à supprimer
+        const comment = post.comments.id(req.body.commentId);
+        if (!comment) {
+            return res.status(404).json({ message: 'Comment not found: ' + req.body.commentId });
+        }
+
+        // Supprimer le commentaire du tableau `comments`
+        post.comments.pull(req.body.commentId);
+
+        // Sauvegarder le post mis à jour
+        const updatedPost = await post.save();
+
+        // Réponse de succès
+        res.status(200).json({
+            message: 'Comment deleted successfully!',
+            post: updatedPost,
+        });
+    } catch (error) {
+        // Gestion des erreurs
+        res.status(500).json({ message: 'Internal server error: ' + error.message });
+    }
+};
