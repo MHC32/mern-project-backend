@@ -51,3 +51,20 @@ module.exports.userInfo = async (req, res) => {
       res.status(500).json({ message: err.message });
     }
   };
+
+
+  module.exports.deleteUser = async(req, res) => {
+    if (!objectID.isValid(req.params.id)) {
+        return res.status(400).send('ID Unknown : ' + req.params.id);
+      }
+
+    try {
+         const deleteUser = await userModel.deleteOne({_id: req.params.id});
+         if(deleteUser.deletedCount === 0){
+            return res.status(404).send('User not found');
+         }
+         res.status(200).send({ message: 'User deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: err.message });
+    }
+  }
