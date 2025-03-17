@@ -5,7 +5,7 @@ const objectID = require("mongoose").Types.ObjectId;
 
 module.exports.readPost = async (req, res) => {
     try {
-      const posts = await postModel.find();
+      const posts = await postModel.find().sort({createdAt: -1});
       if (posts.length === 0) {
         return res.status(404).json({ message: 'No posts found' });
       }
@@ -233,11 +233,49 @@ module.exports.updatePost = async (req, res) => {
     }
 };
 
+module.exports.editCommentPost = async (req, res) => {
+    // Valider l'ID du post
+    if (!objectID.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid post ID: ' + req.params.id });
+    }
 
-  module.exports.editCommentPost = async(req, res) => {
+    // Valider l'ID du commentaire et le texte
+    if (!req.body.commentId || !req.body.text) {
+        return res.status(400).json({ message: 'Missing required fields: commentId or text' });
+    }
 
-  }
+    try {
+        // Trouver le post
+        const post = await postModel.findById(req.params.id);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found: ' + req.params.id });
+        }
+
+        // Trouver le commentaire à modifier
+        const comment = post.comments.id(req.body.commentId);
+        if (!comment) {
+            return res.status(404).json({ message: 'Comment not found: ' + req.body.commentId });
+        }
+
+        // Mettre à jour le texte du commentaire
+        comment.text = req.body.text;
+
+        // Sauvegarder le post mis à jour
+        const updatedPost = await post.save();
+
+        // Réponse de succès
+        res.status(200).json({
+            message: 'Comment updated successfully!',
+            post: updatedPost,
+        });
+    } catch (error) {
+        // Gestion des erreurs
+        res.status(500).json({ message: 'Internal server error: ' + error.message });
+    }
+};
 
   module.exports.deleteCommentPost = async(req, res) => {
-    
+     if (!objectID.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid post ID: ' + req.params.id });
+    }
   }
