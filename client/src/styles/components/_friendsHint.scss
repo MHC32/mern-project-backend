@@ -1,12 +1,14 @@
+@use '../settings' as settings;
+
 .get-friends-container {
   width: 356px;
-  background: linear-gradient(145deg, $color-2 30%, #ffe1d9 100%);
+  background: linear-gradient(145deg, settings.$color-2 30%, #ffe1d9 100%);
   border-radius: 20px;
   padding: 20px 20px 10px;
 
   h4 {
     font-size: 1.4rem;
-    color: $color-3;
+    color: settings.$color-3;
   }
   .icon {
     margin: 16px auto;
@@ -14,7 +16,7 @@
     text-align: center;
     i {
       font-size: 1.6rem;
-      color: $color-3;
+      color: settings.$color-3;
     }
   }
   ul {
@@ -37,22 +39,22 @@
       p {
         text-align: left;
         font-size: 0.9rem;
-        font-family: $font-3;
+        font-family: settings.$font-3;
       }
       span {
         text-align: right;
 
         button {
-          background: $color-1;
-          color: $color-4;
+          background: settings.$color-1;
+          color: settings.$color-4;
           padding: 10px 24px 8px;
           transition: 0.2s;
           border-radius: 20px;
           font-size: 0.9rem;
 
           &:hover {
-            background: $color-4;
-            color: $color-1;
+            background: settings.$color-4;
+            color: settings.$color-1;
           }
         }
       }

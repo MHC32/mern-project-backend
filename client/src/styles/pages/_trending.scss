@@ -1,15 +1,17 @@
+@use '../settings' as settings;
+
 .trending-page {
   max-width: 1200px;
   margin: 62px auto 0;
   display: grid;
   grid-template-columns: 60px 1fr 374px;
 
-  @media screen and(max-width: 990px) {
+  @media screen and (max-width: 990px) {
     grid-template-columns: 60px 1fr;
     margin: 58px 20px 50px
   }
 
-  @media screen and(max-width: 590px) {
+  @media screen and (max-width: 590px) {
     grid-template-columns: 1fr;
     margin: 58px 8px 50px;
   }
@@ -27,7 +29,7 @@
       position: fixed;
       width: 35%;
   
-      @media screen and(min-width: 1200px) {
+      @media screen and (min-width: 1200px) {
         width: 404px;
       }
   

@@ -1,3 +1,5 @@
+@use '../settings' as settings;
+
 .profil-page {
   margin: 80px auto 0;
   max-width: 1200px;
@@ -11,14 +13,14 @@
     display: grid;
     grid-template-columns: 60% 40%;
 
-    @media screen and(max-width: 885px) {
+    @media screen and (max-width: 885px) {
       grid-template-columns: 1fr;
     }
   }
 
   .connection-form {
     border: none;
-    background: $color-4;
+    background: settings.$color-4; // Préfixé avec settings.
     min-width: 490px;
     width: 90%;
     text-align: center;
@@ -26,7 +28,7 @@
     padding: 20px;
     border-radius: 20px;
 
-    @media screen and(max-width: 550px) {
+    @media screen and (max-width: 550px) {
       min-width: 200px;
     }
 
@@ -34,7 +36,7 @@
       display: grid;
       grid-template-columns: 30% 70%;
 
-      @media screen and(max-width: 550px) {
+      @media screen and (max-width: 550px) {
         grid-template-columns: 1fr;
       }
 
@@ -45,16 +47,16 @@
           padding: 10px 20px;
           transition: 0.2s;
 
-          @media screen and(max-width: 550px) {
+          @media screen and (max-width: 550px) {
             width: 80%;
             margin: 0 auto;
           }
         }
         .active-btn {
-          background: $color-1;
+          background: settings.$color-1; // Préfixé avec settings.
 
           &:hover {
-            background: $color-2;
+            background: settings.$color-2; // Préfixé avec settings.
           }
         }
         li:not(.active-btn) {
@@ -64,7 +66,7 @@
         }
         #login {
           position: relative;
-          @media screen and(max-width: 550px) {
+          @media screen and (max-width: 550px) {
             margin-bottom: 30px;
 
             &:after {
@@ -75,7 +77,7 @@
               transform: translateX(-50%);
               width: 80%;
               height: 1px;
-              background: $color-2;
+              background: settings.$color-2; // Préfixé avec settings.
             }
           }
         }
@@ -85,7 +87,7 @@
           padding: 14px 20px;
           margin: 0;
           font-size: 1.2rem;
-          font-family: $font-2;
+          font-family: settings.$font-2; // Préfixé avec settings.
           border-radius: 20px;
 
           &:focus {
@@ -110,13 +112,13 @@
     img {
       height: 280px;
 
-      @media screen and(max-width: 1050px) {
+      @media screen and (max-width: 1050px) {
         height: 220px;
       }
-      @media screen and(max-width: 950px) {
+      @media screen and (max-width: 950px) {
         height: 200px;
       }
-      @media screen and(max-width: 885px) {
+      @media screen and (max-width: 885px) {
         display: none;
       }
     }
@@ -125,17 +127,17 @@
     display: grid;
     grid-template-columns: 50% 50%;
 
-    @media screen and(max-width: 700px) {
+    @media screen and (max-width: 700px) {
       grid-template-columns: 1fr;
     }
 
     > div {
-      background: $color-4;
+      background: settings.$color-4; // Préfixé avec settings.
       border-radius: 20px;
       padding: 25px;
       margin: 20px 10px;
 
-      @media screen and(max-width: 700px) {
+      @media screen and (max-width: 700px) {
         margin: 10px 10px;
       }
     }
@@ -161,8 +163,8 @@
           position: absolute;
           transform: translate(-50%, -50%);
           width: 270px;
-          background: $color-3;
-          color: $color-2;
+          background: settings.$color-3; // Préfixé avec settings.
+          color: settings.$color-2; // Préfixé avec settings.
           border-radius: 20px;
           display: inline-block;
           padding: 9px 0;
@@ -177,7 +179,7 @@
           cursor: pointer;
           padding: 10px 20px;
 
-          @media screen and(max-width: 1121px) {
+          @media screen and (max-width: 1121px) {
             opacity: 0;
           }
         }
@@ -192,7 +194,7 @@
       }
       p {
         color: red;
-        font-family: $font-3;
+        font-family: settings.$font-3; // Préfixé avec settings.
         margin-top: 6px;
       }
     }
@@ -205,7 +207,7 @@
       p,
       textarea {
         min-height: 80px;
-        border: 1px solid $color-1;
+        border: 1px solid settings.$color-1; // Préfixé avec settings.
         border-radius: 20px 20px 6px 20px;
         padding: 10px 20px;
         font-size: 1.1rem;
@@ -223,9 +225,9 @@
         margin: 60px 0 10px;
       }
       h5 {
-        background: $color-1;
-        color: $color-4;
-        font-family: $font-1;
+        background: settings.$color-1; // Préfixé avec settings.
+        color: settings.$color-4; // Préfixé avec settings.
+        font-family: settings.$font-1; // Préfixé avec settings.
         margin: 20px 0;
         padding: 12px;
         font-size: 1.1rem;
@@ -260,7 +262,7 @@
       top: 10%;
       left: 50%;
       transform: translate(-100%);
-      background: $color-2;
+      background: settings.$color-2; // Préfixé avec settings.
       padding: 25px;
       border-radius: 20px;
       box-shadow: 0 0 2px rgba(131, 130, 130, 0.356);
@@ -301,10 +303,10 @@
           width: 2px;
         }
         &::-webkit-scrollbar-track {
-          background: $color-4;
+          background: settings.$color-4; // Préfixé avec settings.
         }
         &::-webkit-scrollbar-thumb {
-          background: $color-1;
+          background: settings.$color-1; // Préfixé avec settings.
         }
         &::-webkit-scrollbar-thumb:hover {
           background: #555;
@@ -331,12 +333,12 @@
             text-align: left;
 
             button {
-              background: $color-4;
+              background: settings.$color-4; // Préfixé avec settings.
               border-radius: 20px;
               margin-right: 6px;
 
               &:hover {
-                color: $color-3;
+                color: settings.$color-3; // Préfixé avec settings.
                 transform: translateX(2px);
               }
             }

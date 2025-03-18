@@ -1,5 +1,7 @@
+@use '../settings' as settings;
+
 .connection-from {
-  border: 2px solid $color-1;
+  border: 2px solid settings.$color-1;
   width: 400px;
   margin: 35px auto 0;
   padding: 20px 0;
@@ -16,8 +18,8 @@
     justify-content: space-around;
 
     li {
-      background: $color-2;
-      color: $white;
+      background: settings.$color-2;
+      color: settings.$white;
       width: 130px;
       padding: 10px 0;
       border-radius: 18px;
@@ -26,12 +28,12 @@
       box-shadow: 3px 3px 1px rgba(51, 51, 51, 0.418);
 
       &:hover {
-        background: $color-1;
+        background: settings.$color-1;
       }
     }
   }
   .active-btn {
-    background: $color-1;
+    background: settings.$color-1;
   }
   form {
     width: 400px;
