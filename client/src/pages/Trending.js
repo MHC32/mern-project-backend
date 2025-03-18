@@ -4,7 +4,7 @@ const Trending = () => {
     return (
         
         <div>
-
+            Hello depuis Trending
         </div>
     );
 };
