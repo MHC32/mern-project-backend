@@ -1,6 +1,11 @@
 const postModel = require('../models/post.model');
 const userModel = require('../models/user.model'); 
+const { uploadErrors } = require('../utils/errors.utils')
 const objectID = require("mongoose").Types.ObjectId;
+const path = require('path'); 
+const fs = require('fs');
+const { promisify } = require('util');
+const writeFileAsync = promisify(fs.writeFile);
 
 
 module.exports.readPost = async (req, res) => {
@@ -16,24 +21,84 @@ module.exports.readPost = async (req, res) => {
     }
   };
 
-
-module.exports.createPost = async (req, res) => {
-    const newPost = new postModel({
-        posterId: req.body.posterId,
-        message : req.body.message,
-        video: req.body.video,
-        likers: [],
-        comments: [],
-    });
-
-    try {
-         const post = await newPost.save()
-         res.status(201).json(post)
-    } catch (err) {
-        return  res.status(400).send(err)
+  
+  module.exports.createPost = async (req, res) => {
+    console.log('Début de la fonction createPost');
+  
+    let filename = null;
+  
+    // Gestion de l'upload de fichier (image ou vidéo)
+    if (req.file !== null) {
+      console.log('Fichier uploadé détecté');
+      try {
+        console.log('Vérification du type de fichier');
+        if (
+          req.file.mimetype !== 'image/jpg' &&
+          req.file.mimetype !== 'image/png' &&
+          req.file.mimetype !== 'image/jpeg' &&
+          req.file.mimetype !== 'video/mp4' &&
+          req.file.mimetype !== 'video/quicktime'
+        ) {
+          console.log('Format de fichier invalide:', req.file.mimetype);
+          throw new Error('Invalid file format');
+        }
+  
+        console.log('Vérification de la taille du fichier');
+        if (req.file.size > 5000000) { // 5 Mo max
+          console.log('Taille du fichier dépassée:', req.file.size);
+          throw new Error('Max size exceeded');
+        }
+  
+        console.log('Génération du nom de fichier');
+        filename = req.body.posterId + Date.now() + '.jpg';
+        console.log('Nom du fichier généré:', filename);
+  
+        // Chemin du fichier de destination
+        const filePath = path.join(__dirname, '../client/public/uploads/posts', filename);
+        console.log('Chemin du fichier de destination:', filePath);
+  
+        // Vérifier si le dossier existe, sinon le créer
+        const uploadDir = path.join(__dirname, '../client/public/uploads/posts');
+        console.log('Vérification du dossier de destination:', uploadDir);
+        if (!fs.existsSync(uploadDir)) {
+          console.log('Création du dossier de destination');
+          fs.mkdirSync(uploadDir, { recursive: true });
+        }
+  
+        // Écrire le fichier à partir du buffer
+        console.log('Écriture du fichier sur le disque');
+        fs.writeFileSync(filePath, req.file.buffer);
+        console.log('Fichier écrit avec succès');
+      } catch (error) {
+        console.error('Erreur lors de l\'upload du fichier:', error.message);
+        const errors = uploadErrors(error);
+        return res.status(400).json(errors);
+      }
+    } else {
+      console.log('Aucun fichier uploadé');
     }
-}
-
+  
+    // Création du post
+    console.log('Création du post');
+    const newPost = new postModel({
+      posterId: req.body.posterId,
+      message: req.body.message,
+      picture: req.file && (req.file.mimetype.includes('image')) ? './uploads/posts/' + filename : null,
+      video: req.file && (req.file.mimetype.includes('video')) ? './uploads/posts/' + filename : null,
+      likers: [],
+      comments: [],
+    });
+  
+    try {
+      console.log('Enregistrement du post dans la base de données');
+      const post = await newPost.save();
+      console.log('Post enregistré avec succès:', post);
+      res.status(201).json(post);
+    } catch (err) {
+      console.error('Erreur lors de l\'enregistrement du post:', err.message);
+      res.status(400).json({ message: err.message });
+    }
+  };
 
 module.exports.updatePost = async (req, res) => {
     if (!objectID.isValid(req.params.id)) {

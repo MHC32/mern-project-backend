@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { uploadErrors } = require('../utils/errors.utils');
 
+
 module.exports.uploadProfile = async (req, res) => {
     console.log('Début de la fonction uploadProfile');
 
