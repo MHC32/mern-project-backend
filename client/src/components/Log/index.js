@@ -35,8 +35,8 @@ const Log = (props) => {
             Se connecter
           </li>
         </ul>
-        {signUpModal && <SignInForm />}
-        {signInModal && <SignUpForm />}
+        {signUpModal && <SignUpForm />}
+        {signInModal && <SignInForm />}
       </div>
     </div>
   );
